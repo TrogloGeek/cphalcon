@@ -1447,8 +1447,10 @@ class Tag
 		if self::_documentType > self::HTML5 {
 			if selfClose {
 				let localCode .= " />";
-			} else {
+			} elseif onlyStart {
 				let localCode .= ">";
+			} else {
+				let localCode .= "></" . tagName . ">";
 			}
 		} else {
 			if onlyStart {
