@@ -19,6 +19,7 @@
 
 namespace Phalcon\Tag;
 
+use Phalcon\EscaperInterface;
 use Phalcon\Tag\Exception;
 use Phalcon\Tag as BaseTag;
 
@@ -238,24 +239,24 @@ abstract class Select
 	 */
 	private static function _optionsFromArray(var data, var value, var closeOption)
 	{
-		var strValue, strOptionValue, code, optionValue, optionText, escaped;
+		var strValue, strOptionValue, code, optionValue, optionText, escaper;
 
 		let code = "";
 
 		for optionValue, optionText in data {
 
-			let escaped = htmlspecialchars(optionValue);
+			let escaper = <EscaperInterface> BaseTag::getEscaperService();
 
 			if typeof optionText == "array" {
-				let code .= "\t<optgroup label=\"" . escaped . "\">" . PHP_EOL . self::_optionsFromArray(optionText, value, closeOption) . "\t</optgroup>" . PHP_EOL;
+				let code .= "\t<optgroup label=\"" . escaper->escapeHtmlAttr(optionValue) . "\">" . PHP_EOL . self::_optionsFromArray(optionText, value, closeOption) . "\t</optgroup>" . PHP_EOL;
 				continue;
 			}
 
 			if typeof value == "array" {
 				if in_array(optionValue, value) {
-					let code .= "\t<option selected=\"selected\" value=\"" . escaped . "\">" . optionText . closeOption;
+					let code .= "\t<option selected=\"selected\" value=\"" . escaper->escapeHtmlAttr(optionValue) . "\">" . escaper->escapeHtml(optionText) . closeOption;
 				} else {
-					let code .= "\t<option value=\"" . escaped . "\">" . optionText . closeOption;
+					let code .= "\t<option value=\"" . escaper->escapeHtmlAttr(optionValue) . "\">" . escaper->escapeHtml(optionText) . closeOption;
 				}
 			} else {
 
@@ -263,9 +264,9 @@ abstract class Select
 					strValue = (string) value;
 
 				if strOptionValue === strValue {
-					let code .= "\t<option selected=\"selected\" value=\"" . escaped . "\">" . optionText . closeOption;
+					let code .= "\t<option selected=\"selected\" value=\"" . escaper->escapeHtmlAttr(optionValue) . "\">" . escaper->escapeHtml(optionText) . closeOption;
 				} else {
-					let code .= "\t<option value=\"" . escaped . "\">" . optionText . closeOption;
+					let code .= "\t<option value=\"" . escaper->escapeHtmlAttr(optionValue) . "\">" . escaper->escapeHtml(optionText) . closeOption;
 				}
 			}
 		}
