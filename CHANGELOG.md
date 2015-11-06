@@ -1,3 +1,9 @@
+# [2.0.7-patch0001]
+- Phalcon\Tag::tagHtml(string tagName, var parameters = null, boolean selfClose = false,
+       		boolean onlyStart = false, boolean useEol = false)
+    now closes XHTML tags when !selfClose && !onlyStart (is now coherent between HTML and XHTML)
+- Phalcon\Tag\Select now HTML escapes provided options keys and values
+
 # [2.0.7](https://github.com/phalcon/cphalcon/releases/tag/phalcon-v2.0.7) (2015-08-17)
 - `Image\Adapter\Gd::save()` no longer fails if the method or the instance is created with a filename without an extension
 - Fixed segfault in `Image\Adapter\Imagick::text()`
